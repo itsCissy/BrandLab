@@ -168,7 +168,7 @@ function ThemeToggle({
 function DownloadMdButton({ slug }: { slug: string }) {
   return (
     <a
-      href={`/download/${slug}`}
+      href={`/download/${slug}-DESIGN.md`}
       download={`${slug}-DESIGN.md`}
       className="inline-flex items-center rounded-[6px] border border-[color:var(--color-border)] bg-[color:var(--color-surface)] px-3 py-1.5 text-sm text-[color:var(--color-muted)] transition-colors hover:text-[color:var(--color-fg)]"
       title="Download DESIGN.md"
@@ -206,7 +206,7 @@ function PreviewFrame({
     <div className="overflow-hidden rounded-[6px] border border-[color:var(--color-border)] bg-[color:var(--color-bg)]">
       <iframe
         key={`${slug}-${theme}`}
-        src={`/preview/${slug}/${theme}`}
+        src={`/preview/${slug}/${theme}.html`}
         title={`${slug} preview (${theme})`}
         className="h-[80vh] w-full border-0"
         sandbox="allow-same-origin"

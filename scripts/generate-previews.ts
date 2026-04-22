@@ -12,7 +12,7 @@
  */
 import { config as loadDotenv } from 'dotenv';
 import { createHash } from 'node:crypto';
-import { existsSync, readFileSync, readdirSync, writeFileSync } from 'node:fs';
+import { copyFileSync, existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import Anthropic from '@anthropic-ai/sdk';
 import {
@@ -69,6 +69,31 @@ Env:
 }
 
 const ROOT = join(process.cwd(), 'content', 'projects');
+const PUBLIC_PREVIEW = join(process.cwd(), 'public', 'preview');
+const PUBLIC_DOWNLOAD = join(process.cwd(), 'public', 'download');
+
+function syncPublicAssets(slug: string): void {
+  const dir = join(ROOT, slug);
+  const designSrc = join(dir, 'DESIGN.md');
+  if (existsSync(designSrc)) {
+    mkdirSync(PUBLIC_DOWNLOAD, { recursive: true });
+    copyFileSync(designSrc, join(PUBLIC_DOWNLOAD, `${slug}-DESIGN.md`));
+  }
+  const targetDir = join(PUBLIC_PREVIEW, slug);
+  let made = false;
+  for (const [src, dest] of [
+    ['preview.html', 'light.html'],
+    ['preview-dark.html', 'dark.html'],
+  ] as const) {
+    const srcPath = join(dir, src);
+    if (!existsSync(srcPath)) continue;
+    if (!made) {
+      mkdirSync(targetDir, { recursive: true });
+      made = true;
+    }
+    copyFileSync(srcPath, join(targetDir, dest));
+  }
+}
 
 function listSlugs(filter?: string): string[] {
   const all = readdirSync(ROOT, { withFileTypes: true })
@@ -191,6 +216,7 @@ async function processSlug(args: {
 
   if (!args.force && lightOk && darkOk) {
     console.log(`[${args.slug}] up-to-date — skip`);
+    syncPublicAssets(args.slug);
     return { slug: args.slug, status: 'skipped' };
   }
 
@@ -241,6 +267,7 @@ async function processSlug(args: {
   }
 
   writeFileSync(hashPath, JSON.stringify(next, null, 2) + '\n', 'utf8');
+  syncPublicAssets(args.slug);
   console.log(`[${args.slug}] done`);
   return { slug: args.slug, status: 'generated' };
 }

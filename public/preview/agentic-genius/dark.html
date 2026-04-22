@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Agentic Genius — Design System Preview (Dark)</title>
+<style>
+  :root{
+    --w:#FFFFFF; --b1000:#000000;
+    --n50:#F7F8FA; --n100:#F0F3F7; --n200:#E7ECF3; --n300:#CDD4DF;
+    --n400:#B7BDCA; --n500:#949CAC; --n600:#667085; --n700:#475569;
+    --n800:#344052; --n900:#252B39; --n1000:#0F1729;
+    --b400:#4161FF; --b500:#123AFF;
+    --g600:#00DF87; --g700:#00BF74;
+    --r500:#F24E3F; --r600:#D22F21;
+    --y500:#FFC629; --s500:#25B3FF;
+
+    --bg:var(--n1000);
+    --surface:var(--n900);
+    --surface-elev:var(--n800);
+    --border-subtle:var(--n800);
+    --border-strong:var(--n700);
+    --text:var(--w);
+    --text-secondary:var(--n400);
+    --text-muted:var(--n500);
+
+    --font-sans:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","Helvetica Neue",Arial,sans-serif;
+    --font-mono:ui-monospace,"SF Mono","Menlo","Cascadia Code","Source Code Pro",monospace;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:var(--font-sans);font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:960px;margin:0 auto;padding:48px 32px 96px}
+  section{margin-top:64px}
+  section:first-of-type{margin-top:0}
+  h1{font-size:36px;font-weight:600;line-height:1.20;letter-spacing:-0.02em;margin:0 0 8px}
+  h2{font-size:22px;font-weight:600;line-height:1.30;letter-spacing:-0.01em;margin:0 0 6px}
+  h3{font-size:18px;font-weight:500;line-height:1.40;margin:0 0 8px}
+  p{margin:0 0 8px;color:var(--text-secondary)}
+  .desc{font-size:13px;color:var(--text-secondary);margin-bottom:24px}
+  .micro{font-size:11px;font-weight:600;line-height:1.30;letter-spacing:0.04em;text-transform:uppercase;color:var(--text-muted)}
+  .label{font-size:11px;font-weight:600;letter-spacing:0.04em;text-transform:uppercase;color:var(--text-muted);margin-bottom:8px;display:block}
+  .row{display:flex;flex-wrap:wrap;gap:16px;align-items:flex-start}
+  .col{display:flex;flex-direction:column;gap:8px}
+  .grid{display:grid;gap:16px}
+
+  /* HEADER */
+  .header{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-bottom:24px;border-bottom:1px solid var(--border-subtle)}
+  .header .tag-h{font-size:13px;color:var(--text-secondary);margin-top:6px}
+  .status-pill{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:9999px;background:var(--n800);font-size:11px;font-weight:600;letter-spacing:0.04em;text-transform:uppercase;color:var(--w)}
+  .dot{width:8px;height:8px;border-radius:50%;display:inline-block}
+  .dot.green{background:var(--g600)}
+  .dot.blue{background:var(--b400)}
+  .dot.red{background:var(--r500)}
+  .dot.gray{background:var(--n500)}
+  @keyframes pulse{0%{transform:scale(1);opacity:1}100%{transform:scale(1.8);opacity:0}}
+  .dot-pulse{position:relative}
+  .dot-pulse::after{content:"";position:absolute;inset:0;border-radius:50%;background:inherit;animation:pulse 1.5s ease-out infinite}
+
+  /* COLOR */
+  .swatch-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+  .swatch{border:1px solid var(--border-subtle);border-radius:8px;overflow:hidden;background:var(--surface)}
+  .swatch .chip{height:64px}
+  .swatch .meta{padding:8px 10px;font-size:11px;font-weight:600;letter-spacing:0.04em;text-transform:uppercase}
+  .swatch .meta .hex{display:block;font-family:var(--font-mono);font-size:11px;font-weight:400;text-transform:none;letter-spacing:0;color:var(--text-secondary);margin-top:2px}
+  .group-title{font-size:13px;font-weight:600;color:var(--text);margin:20px 0 10px}
+  .deco-row{display:grid;grid-template-columns:repeat(11,1fr);gap:4px;margin-bottom:6px}
+  .deco-row .swatch{border-radius:4px}
+  .deco-row .chip{height:36px}
+  .deco-row .meta{padding:4px 6px;font-size:9px}
+  .deco-row .meta .hex{font-size:9px}
+  .deco-label{font-size:11px;font-weight:600;color:var(--text-secondary);margin:8px 0 4px}
+
+  /* TYPO */
+  .type-row{padding:12px 0;border-top:1px solid var(--border-subtle);display:flex;gap:24px;align-items:baseline}
+  .type-row:first-child{border-top:none}
+  .type-meta{flex:0 0 200px;font-family:var(--font-mono);font-size:11px;color:var(--text-muted)}
+  .type-sample{flex:1;color:var(--text)}
+
+  /* SPACING */
+  .space-row{display:flex;align-items:center;gap:16px;margin-bottom:8px}
+  .space-row .name{flex:0 0 120px;font-family:var(--font-mono);font-size:12px;color:var(--text-secondary)}
+  .space-row .bar{height:14px;background:var(--w);border-radius:2px}
+  .space-row .px{font-family:var(--font-mono);font-size:11px;color:var(--text-muted)}
+
+  .radius-row{display:flex;gap:16px;flex-wrap:wrap}
+  .radius-cell{display:flex;flex-direction:column;align-items:center;gap:8px}
+  .radius-box{width:64px;height:64px;background:var(--surface);border:1px solid var(--border-strong)}
+
+  /* ICONS */
+  .icon-scale{display:flex;align-items:flex-end;gap:24px;flex-wrap:wrap}
+  .icon-cell{display:flex;flex-direction:column;align-items:center;gap:8px;color:var(--w)}
+  .icon-variant{display:flex;gap:32px}
+  .icon-variant .icon-cell{color:var(--w)}
+
+  /* BUTTONS */
+  .btn{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:6px;font-family:var(--font-sans);font-size:14px;font-weight:500;line-height:1.20;border:none;cursor:pointer;transition:background-color 120ms ease}
+  .btn-primary{background:var(--w);color:var(--n1000)}
+  .btn-primary.hover{background:var(--n100)}
+  .btn-primary.focus{background:var(--w);color:var(--n1000);outline:2px solid var(--w);outline-offset:2px}
+  .btn-primary.disabled{opacity:0.4;cursor:not-allowed}
+  .btn-secondary{background:transparent;color:var(--w);border:1px solid var(--n700)}
+  .btn-secondary.hover{background:var(--n900)}
+  .btn-secondary.focus{outline:2px solid var(--w);outline-offset:2px}
+  .btn-secondary.disabled{opacity:0.4;cursor:not-allowed}
+  .btn-ghost{background:transparent;color:var(--n400)}
+  .btn-ghost.hover{background:var(--n800)}
+  .btn-ghost.focus{outline:2px solid var(--w);outline-offset:2px}
+  .btn-ghost.disabled{opacity:0.4;cursor:not-allowed}
+  .btn-danger{background:var(--r500);color:var(--w)}
+  .btn-danger.hover{background:var(--r600)}
+  .btn-danger.focus{outline:2px solid var(--w);outline-offset:2px}
+  .btn-danger.disabled{opacity:0.4;cursor:not-allowed}
+  .btn-row{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:16px}
+  .btn-row-label{flex:0 0 100px;font-size:11px;font-weight:600;letter-spacing:0.04em;text-transform:uppercase;color:var(--text-muted)}
+  .state-cell{display:flex;flex-direction:column;gap:6px;align-items:flex-start}
+  .state-cell .micro{margin-bottom:2px}
+
+  /* INPUTS */
+  .input{width:100%;padding:8px 12px;border-radius:6px;background:var(--n1000);border:1px solid var(--n700);color:var(--w);font-family:var(--font-sans);font-size:14px;line-height:1.4}
+  .input::placeholder{color:var(--n500)}
+  .input.focus{border-color:var(--w);box-shadow:0 0 0 3px rgba(255,255,255,0.18)}
+  .input.disabled{opacity:0.4;background:#1A2236;cursor:not-allowed}
+  .input.error{border-color:var(--r500)}
+  .err-msg{margin-top:6px;font-size:12px;color:var(--r500)}
+  .field{display:flex;flex-direction:column;gap:6px;width:100%}
+  .field-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
+  textarea.input{min-height:80px;resize:vertical;font-family:var(--font-sans)}
+
+  /* SELECT */
+  .select-wrap{position:relative;width:240px}
+  .select{display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:var(--n1000);border:1px solid var(--n700);border-radius:6px;color:var(--w);font-size:14px;cursor:pointer}
+  .select.placeholder{color:var(--n500)}
+  .select.open{border-color:var(--w);box-shadow:0 0 0 3px rgba(255,255,255,0.18)}
+  .select.disabled{opacity:0.4;background:#1A2236;cursor:not-allowed}
+  .select-menu{margin-top:4px;background:var(--n900);border-radius:8px;padding:4px 0;min-width:240px;box-shadow:rgba(0,0,0,0.4) 0 8px 24px -4px;border:1px solid var(--n800)}
+  .menu-item{display:flex;align-items:center;justify-content:space-between;padding:8px 12px;font-size:14px;color:var(--w);cursor:pointer}
+  .menu-item:hover{background:#1A2236}
+  .menu-item.disabled{opacity:0.4;cursor:not-allowed}
+  .menu-item.disabled:hover{background:transparent}
+
+  /* SEARCH */
+  .search-wrap{position:relative;width:320px}
+  .search-input{width:100%;padding:8px 36px;border-radius:6px;background:var(--n1000);border:1px solid var(--n700);color:var(--w);font-size:14px}
+  .search-input::placeholder{color:var(--n500)}
+  .search-icon-l{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--n500);display:flex}
+  .search-icon-r{position:absolute;right:12px;top:50%;transform:translateY(-50%);color:var(--n500);display:flex;cursor:pointer}
+  @keyframes spin{to{transform:translateY(-50%) rotate(360deg)}}
+  .spinner{position:absolute;right:12px;top:50%;width:14px;height:14px;border:2px solid var(--n700);border-top-color:var(--w);border-radius:50%;transform:translateY(-50%);animation:spin 0.8s linear infinite}
+
+  /* FORM CONTROLS */
+  .ctrl-row{display:flex;gap:24px;align-items:center;flex-wrap:wrap;margin-bottom:16px}
+  .ctrl{display:inline-flex;align-items:center;gap:8px;font-size:14px;color:var(--w)}
+
+  .checkbox{width:16px;height:16px;border-radius:4px;border:1px solid var(--n700);background:transparent;display:inline-block;position:relative;flex-shrink:0}
+  .checkbox.hover{border-color:var(--n600)}
+  .checkbox.checked{background:var(--w);border:none;color:var(--n1000)}
+  .checkbox.checked::after{content:"";position:absolute;width:10px;height:5px;border-left:2px solid currentColor;border-bottom:2px solid currentColor;transform:rotate(-45deg);left:3px;top:3px}
+  .checkbox.indeterminate{background:var(--w);border:none;color:var(--n1000)}
+  .checkbox.indeterminate::after{content:"";position:absolute;width:8px;height:2px;background:currentColor;left:4px;top:7px}
+  .checkbox.focus{outline:2px solid var(--w);outline-offset:2px}
+  .checkbox.disabled{opacity:0.4}
+
+  .radio{width:16px;height:16px;border-radius:50%;border:1px solid var(--n700);background:transparent;display:inline-block;position:relative;flex-shrink:0}
+  .radio.checked{border:1px solid var(--w);color:var(--w)}
+  .radio.checked::after{content:"";position:absolute;width:8px;height:8px;border-radius:50%;background:currentColor;left:3px;top:3px}
+  .radio.disabled{opacity:0.4}
+
+  .switch{width:32px;height:18px;border-radius:9999px;background:var(--n700);position:relative;flex-shrink:0;padding:2px;display:inline-block;transition:background-color 160ms ease}
+  .switch .thumb{width:14px;height:14px;border-radius:50%;background:var(--w);transition:transform 160ms ease}
+  .switch.on{background:var(--w)}
+  .switch.on .thumb{transform:translateX(14px);background:var(--n1000)}
+  .switch.disabled{opacity:0.4}
+
+  .slider{width:200px}
+  .slider .track{position:relative;height:4px;background:var(--n800);border-radius:9999px}
+  .slider .fill{position:absolute;left:0;top:0;height:4px;background:var(--w);border-radius:9999px}
+  .slider .thumb{position:absolute;top:50%;width:16px;height:16px;border-radius:50%;background:var(--w);border:1px solid var(--w);box-shadow:rgba(0,0,0,0.4) 0 1px 4px;transform:translate(-50%,-50%)}
+  .slider.disabled{opacity:0.4}
+
+  /* CARDS */
+  .cards{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+  .card{background:var(--n900);padding:20px;border-radius:8px;color:var(--w)}
+  .card-flat{}
+  .card-contained{border:1px solid var(--n800)}
+  .card-contained.hover{border-color:var(--n700)}
+  .card-ring{box-shadow:0 0 0 1px var(--n800)}
+  .card-whisper{border:1px solid var(--n800)} /* dark降级为contained */
+  .card-inset{box-shadow:inset 0 0 0 1px rgba(255,255,255,0.10)}
+  .card h3.title{font-size:18px;font-weight:600;margin:0 0 8px;color:var(--w);letter-spacing:-0.01em}
+  .card .body{font-size:15px;color:var(--n400);margin:0 0 16px;line-height:1.55}
+  .card .footer{display:flex;justify-content:space-between;align-items:center;padding-top:12px;border-top:1px solid var(--n800);font-size:12px;color:var(--n500)}
+
+  /* STATUS */
+  .status-row{display:flex;flex-wrap:wrap;gap:16px}
+  .status-chip{display:inline-flex;align-items:center;gap:8px;padding:6px 12px;border-radius:9999px;background:var(--n900);border:1px solid var(--n800);font-size:12px;color:var(--n400)}
+
+  /* CODE */
+  .code-block{background:var(--n1000);border:1px solid var(--n800);border-radius:6px;padding:12px 16px;font-family:var(--font-mono);font-size:13px;line-height:1.65;overflow-x:auto;color:var(--w)}
+  .code-block .kw{color:var(--b400)}
+  .code-block .str{color:var(--g600)}
+  .code-block .com{color:var(--n500)}
+  .code-block .fn{color:var(--w)}
+  .code-block .num{color:#FF8245}
+  .code-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+
+  /* CHAT */
+  .chat{display:flex;flex-direction:column;gap:16px;background:var(--n900);border:1px solid var(--n800);border-radius:8px;padding:20px}
+  .bubble-user{align-self:flex-end;max-width:70%;background:var(--n800);color:var(--n50);padding:10px 14px;border-radius:12px;font-size:15px}
+  .bubble-agent{align-self:flex-start;max-width:100%;color:var(--w);font-size:15px;line-height:1.6}
+
+  /* LINKS */
+  .link-inline{color:var(--w);text-decoration:underline;text-decoration-color:var(--n700);text-underline-offset:3px}
+  .link-inline.hover{color:var(--b400);text-decoration-color:var(--b400)}
+  .link-standalone{display:inline-flex;align-items:center;gap:6px;color:var(--w);font-weight:500;text-decoration:none}
+  .link-standalone.hover{color:var(--b400);text-decoration:underline}
+
+  /* TAGS */
+  .tag{display:inline-flex;align-items:center;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;letter-spacing:0.04em;text-transform:uppercase;border:1px solid transparent}
+  .tag-default{background:#1F2937;color:var(--n300);border-color:var(--n800)}
+  .tag-info{background:#001788;color:#AAB8FF;border-color:#001EB1}
+  .tag-success{background:#003621;color:#72FFC7;border-color:#00663E}
+  .tag-warning{background:#433100;color:#FFDD7D;border-color:#715300}
+  .tag-error{background:#5D110A;color:#FFB3AA;border-color:#8C1409}
+  .tag-research{background:#003626;color:#67F2C9;border-color:#00563C}
+  .tag-design{background:#270788;color:#C1ACFF;border-color:#360ABC}
+  .tag-frontend{background:#5C0525;color:#FCA5D1;border-color:#7E163F}
+  .tag-backend{background:#004B74;color:#8DD7FF;border-color:#00669D}
+  .tag-marketing{background:#7B2800;color:#FF9E6F;border-color:#AB3800}
+  .tag-cell{display:flex;flex-direction:column;gap:4px;align-items:flex-start}
+  .tag-tokens{font-family:var(--font-mono);font-size:10px;color:var(--text-muted)}
+
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- 1. HEADER -->
+  <header class="header">
+    <div>
+      <h1>Agentic Genius</h1>
+      <div class="tag-h">Design system preview · dark theme · 冷峻精确 · 克制信号 · 开发者优先</div>
+    </div>
+    <span class="status-pill"><span class="dot green dot-pulse"></span>Active</span>
+  </header>
+
+  <!-- 2. COLORS -->
+  <section>
+    <h2>Color Tokens</h2>
+    <p class="desc">Brand anchors, signal colors, neutral scale (N), and decorative palette.</p>
+
+    <div class="group-title">Brand Anchors</div>
+    <div class="swatch-grid">
+      <div class="swatch"><div class="chip" style="background:#FFFFFF"></div><div class="meta">W<span class="hex">#FFFFFF</span></div></div>
+      <div class="swatch"><div class="chip" style="background:#0F1729"></div><div class="meta">N1000<span class="hex">#0F1729</span></div></div>
+      <div class="swatch"><div class="chip" style="background:#000000"></div><div class="meta">B1000<span class="hex">#000000</span></div></div>
+    </div>
+
+    <div class="group-title">Signal Colors</div>
+    <div class="swatch-grid">
+      <div class="swatch"><div class="chip" style="background:#123AFF"></div><div class="meta">B500<span class="hex">#123AFF</span></div></div>
+      <div class="swatch"><div class="chip" style="background:#4161FF"></div><div class="meta">B400 (dark)<span class="hex">#4161FF</span></div></div>
+      <div class="swatch"><div class="chip" style="background:#00BF74"></div><div class="meta">G700<span class="hex">#00BF74</span></div></div>
+      <div class="swatch"><div class="chip" style="background:#00DF87"></div><div class="meta">G600 (dark)<span class="hex">#00DF87</span></div></div>
+    </div>
+
+    <div class="group-title">Neutral Scale (N — UI Workhorse)</div>
+    <div class="swatch-grid">
+      <div class="swatch"><div class="chip" style="background:#F7F8FA"></div><div class="meta">N50<span class="hex">#F7F8FA</span></div></div>
+      <div class="swatch"><div class="chip" style="background:#F0F3F7"></div><div class="meta">N100<span class="hex">#F0F3F7</span></div></div>
+      <div class="swatch"><div class="chip" style="background:#E7ECF3"></div><div class="meta">N200<span class="hex">#E7ECF3</span></div></div>
+      <div class="swatch"><div class="chip" style="background:#CDD4DF"></div><div class="meta">N300<span class="hex">#CDD4DF</span></div></div>
+      <div class="swatch"><div class="chip" style="background:#B7BDCA"></div><div class="meta">N400<span class="hex">#B7BDCA</span></div></div>
+      <div class="swatch"><div class="chip" style="background:#949CAC"></div><div class="meta">N500<span class="hex">#949CAC</span></div></div>
+      <div class="swatch"><div class="chip" style="background:#667085"></div><div class="meta">N600<span class="hex">#667085</span></div></div>
+      <div class="swatch"><div class="chip" style="background:#475569"></div><div class="meta">N700<span class="hex">#475569</span></div></div>
+      <div class="swatch"><div class="chip" style="background:#344052"></div><div class="meta">N800<span class="hex">#344052</span></div></div>
+      <div class="swatch"><div class="chip" style="background:#252B39"></div><div class="meta">N900<span class="hex">#252B39</span></div></div>
+      <div class="swatch"><div class="chip" style="background:#0F1729"></div><div class="meta">N1000<span class="hex">#0F1729</span></div></div>
+    </div>
+
+    <div class="group-title">Status & Semantic</div>
+    <div class="swatch-grid">
+      <div class="swatch"><div class="chip" style="background:#00BF74"></div><div class="meta">Success / G700<span class="hex">#00BF74</span></div></div>
+      <div class="swatch"><div class="chip" style="background:#FFC629"></div><div class="meta">Warning / Y500<span class="hex">#FFC629</span></div></div>
+      <div class="swatch"><div class="chip" style="background:#F24E3F"></div><div class="meta">Error / R500<span class="hex">#F24E3F</span></div></div>
+      <div class="swatch"><div class="chip" style="background:#25B3FF"></div><div class="meta">Info / S500<span class="hex">#25B3FF</span></div></div>
+    </div>
+
+    <div class="group-title">Decorative Palette (装饰用，不参与控件)</div>
+    <div class="deco-label">R · Red</div>
+    <div class="deco-row">
+      <div class="swatch"><div class="chip" style="background:#F7F8FA"></div></div>
+      <div class="swatch"><div class="chip" style="background:#FFE8E4"></div></div>
+      <div class="swatch"><div class="chip" style="background:#FFD3CD"></div></div>
+      <div class="swatch"><div class="chip" style="background:#FFB3AA"></div></div>
+      <div class="swatch"><div class="chip" style="background:#FE7C71"></div></div>
+      <div class="swatch"><div class="chip" style="background:#F24E3F"></div></div>
+      <div class="swatch"><div class="chip" style="background:#D22F21"></div></div>
+      <div class="swatch"><div class="chip" style="background:#AC190B"></div></div>
+      <div class="swatch"><div class="chip" style="background:#8C1409"></div></div>
+      <div class="swatch"><div class="chip" style="background:#5D110A"></div></div>
+      <div class="swatch"><div class="chip" style="background:#390804"></div></div>
+    </div>
+    <div class="deco-label">O · Orange</div>
+    <div class="deco-row">
+      <div class="swatch"><div class="chip" style="background:#FFF1EA"></div></div>
+      <div class="swatch"><div class="chip" style="background:#FFD8C4"></div></div>
+      <div class="swatch"><div class="chip" style="background:#FFBD9C"></div></div>
+      <div class="swatch"><div class="chip" style="background:#FF9E6F"></div></div>
+      <div class="swatch"><div class="chip" style="background:#FF8245"></div></div>
+      <div class="swatch"><div class="chip" style="background:#FF671D"></div></div>
+      <div class="swatch"><div class="chip" style="background:#E94C00"></div></div>
+      <div class="swatch"><div class="chip" style="background:#CD4300"></div></div>
+      <div class="swatch"><div class="chip" style="background:#AB3800"></div></div>
+      <div class="swatch"><div class="chip" style="background:#7B2800"></div></div>
+      <div class="swatch"><div class="chip" style="background:#441600"></div></div>
+    </div>
+    <div class="deco-label">G · Green</div>
+    <div class="deco-row">
+      <div class="swatch"><div class="chip" style="background:#E3FFF4"></div></div>
+      <div class="swatch"><div class="chip" style="background:#C7FFE9"></div></div>
+      <div class="swatch"><div class="chip" style="background:#A1FFDA"></div></div>
+      <div class="swatch"><div class="chip" style="background:#72FFC7"></div></div>
+      <div class="swatch"><div class="chip" style="background:#3FFFB3"></div></div>
+      <div class="swatch"><div class="chip" style="background:#00FF9A"></div></div>
+      <div class="swatch"><div class="chip" style="background:#00DF87"></div></div>
+      <div class="swatch"><div class="chip" style="background:#00BF74"></div></div>
+      <div class="swatch"><div class="chip" style="background:#008F57"></div></div>
+      <div class="swatch"><div class="chip" style="background:#00663E"></div></div>
+      <div class="swatch"><div class="chip" style="background:#003621"></div></div>
+    </div>
+    <div class="deco-label">B · Blue / S · Sky / P · Purple / P · Pink (selected)</div>
+    <div class="deco-row">
+      <div class="swatch"><div class="chip" style="background:#E6EAFF"></div></div>
+      <div class="swatch"><div class="chip" style="background:#AAB8FF"></div></div>
+      <div class="swatch"><div class="chip" style="background:#123AFF"></div></div>
+      <div class="swatch"><div class="chip" style="background:#E8F7FF"></div></div>
+      <div class="swatch"><div class="chip" style="background:#5BC5FF"></div></div>
+      <div class="swatch"><div class="chip" style="background:#0081C7"></div></div>
+      <div class="swatch"><div class="chip" style="background:#F2EEFF"></div></div>
+      <div class="swatch"><div class="chip" style="background:#7F54FF"></div></div>
+      <div class="swatch"><div class="chip" style="background:#270788"></div></div>
+      <div class="swatch"><div class="chip" style="background:#FDE9F4"></div></div>
+      <div class="swatch"><div class="chip" style="background:#ED4693"></div></div>
+    </div>
+  </section>
+
+  <!-- 3. TYPOGRAPHY -->
+  <section>
+    <h2>Typography</h2>
+    <p class="desc">System font stack, weight 600 ceiling, mono for code.</p>
+    <div class="type-row">
+      <div class="type-meta">Display Hero<br>36 / 600 / -0.02em</div>
+      <div class="type-sample" style="font-size:36px;font-weight:600;line-height:1.20;letter-spacing:-0.02em">Build agents that ship.</div>
+    </div>
+    <div class="type-row">
+      <div class="type-meta">Page Title<br>28 / 600 / -0.015em</div>
+      <div class="type-sample" style="font-size:28px;font-weight:600;line-height:1.25;letter-spacing:-0.015em">Project workspace</div>
+    </div>
+    <div class="type-row">
+      <div class="type-meta">Section Heading<br>22 / 600 / -0.01em</div>
+      <div class="type-sample" style="font-size:22px;font-weight:600;line-height:1.30;letter-spacing:-0.01em">Recent activity</div>
+    </div>
+    <div class="type-row">
+      <div class="type-meta">Sub-heading<br>18 / 500</div>
+      <div class="type-sample" style="font-size:18px;font-weight:500">Configure the agent runtime</div>
+    </div>
+    <div class="type-row">
+      <div class="type-meta">Body Large<br>16 / 400 / 1.60</div>
+      <div class="type-sample" style="font-size:16px;line-height:1.60">The agent observed three repositories and produced a structured plan.</div>
+    </div>
+    <div class="type-row">
+      <div class="type-meta">Body<br>15 / 400 / 1.55</div>
+      <div class="type-sample" style="font-size:15px;line-height:1.55">Default body copy. Clean, neutral, and dense — designed to disappear.</div>
+    </div>
+    <div class="type-row">
+      <div class="type-meta">Body Small<br>13 / 400</div>
+      <div class="type-sample" style="font-size:13px;color:var(--text-secondary)">Secondary descriptions and helper text live here.</div>
+    </div>
+    <div class="type-row">
+      <div class="type-meta">Caption<br>12 / 400</div>
+      <div class="type-sample" style="font-size:12px;color:var(--text-muted)">Updated 2 minutes ago · v0.4.1</div>
+    </div>
+    <div class="type-row">
+      <div class="type-meta">Micro Label<br>11 / 600 / 0.04em / UPPER</div>
+      <div class="type-sample"><span class="micro">runtime · production</span></div>
+    </div>
+    <div class="type-row">
+      <div class="type-meta">Code Inline<br>mono 13 / 400</div>
+      <div class="type-sample" style="font-size:15px">Run <code style="font-family:var(--font-mono);font-size:13px;background:var(--n900);padding:2px 6px;border-radius:4px;border:1px solid var(--n800)">agent.invoke()</code> to start.</div>
+    </div>
+    <div class="type-row">
+      <div class="type-meta">Code Block<br>mono 13 / 400 / 1.65</div>
+      <div class="type-sample" style="flex:1">
+        <pre class="code-block" style="margin:0"><span class="com">// hello</span>
+<span class="kw">const</span> <span class="fn">agent</span> = <span class="str">"genius"</span>;</pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. SPACING & RADIUS -->
+  <section>
+    <h2>Spacing & Radius</h2>
+    <p class="desc">4px base unit. Radius scale: xs · sm (default) · md · lg · xl · full.</p>
+
+    <div class="group-title">Spacing Scale</div>
+    <div class="space-row"><div class="name">space-1</div><div class="bar" style="width:4px"></div><div class="px">4px</div></div>
+    <div class="space-row"><div class="name">space-2</div><div class="bar" style="width:8px"></div><div class="px">8px</div></div>
+    <div class="space-row"><div class="name">space-3</div><div class="bar" style="width:12px"></div><div class="px">12px</div></div>
+    <div class="space-row"><div class="name">space-4</div><div class="bar" style="width:16px"></div><div class="px">16px (default)</div></div>
+    <div class="space-row"><div class="name">space-5</div><div class="bar" style="width:20px"></div><div class="px">20px</div></div>
+    <div class="space-row"><div class="name">space-6</div><div class="bar" style="width:24px"></div><div class="px">24px</div></div>
+    <div class="space-row"><div class="name">space-8</div><div class="bar" style="width:32px"></div><div class="px">32px</div></div>
+    <div class="space-row"><div class="name">space-10</div><div class="bar" style="width:40px"></div><div class="px">40px</div></div>
+    <div class="space-row"><div class="name">space-12</div><div class="bar" style="width:48px"></div><div class="px">48px</div></div>
+    <div class="space-row"><div class="name">space-16</div><div class="bar" style="width:64px"></div><div class="px">64px</div></div>
+    <div class="space-row"><div class="name">space-20</div><div class="bar" style="width:80px"></div><div class="px">80px</div></div>
+    <div class="space-row"><div class="name">space-24</div><div class="bar" style="width:96px"></div><div class="px">96px</div></div>
+    <div class="space-row"><div class="name">space-32</div><div class="bar" style="width:128px"></div><div class="px">128px</div></div>
+
+    <div class="group-title" style="margin-top:32px">Radius Scale</div>
+    <div class="radius-row">
+      <div class="radius-cell"><div class="radius-box" style="border-radius:0"></div><span class="micro">none · 0</span></div>
+      <div class="radius-cell"><div class="radius-box" style="border-radius:4px"></div><span class="micro">xs · 4</span></div>
+      <div class="radius-cell"><div class="radius-box" style="border-radius:6px"></div><span class="micro">sm · 6 (default)</span></div>
+      <div class="radius-cell"><div class="radius-box" style="border-radius:8px"></div><span class="micro">md · 8</span></div>
+      <div class="radius-cell"><div class="radius-box" style="border-radius:12px"></div><span class="micro">lg · 12</span></div>
+      <div class="radius-cell"><div class="radius-box" style="border-radius:16px"></div><span class="micro">xl · 16</span></div>
+      <div class="radius-cell"><div class="radius-box" style="border-radius:9999px"></div><span class="micro">full</span></div>
+    </div>
+  </section>
+
+  <!-- 5. ICONS -->
+  <section>
+    <h2>Iconography</h2>
+    <p class="desc">MingCute icon library. Line variant default, fill for active/selected states.</p>
+
+    <div class="group-title">Sizing Scale</div>
+    <div class="icon-scale">
+      <div class="icon-cell" style="color:var(--w)"><span style="display:inline-block;width:12px;height:12px;vertical-align:middle;flex-shrink:0;color:currentColor;" data-mc="settings_3_line"><svg width="12" height="12" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><path fill="currentColor" d="M14.035 2.809c.37-.266.89-.39 1.401-.203a9.99 9.99 0 0 1 2.982 1.725c.417.35.57.861.524 1.313-.075.753.057 1.48.42 2.106.32.557.802.997 1.39 1.307l.225.11c.414.187.782.576.875 1.113a10.06 10.06 0 0 1 0 3.44c-.083.484-.39.847-.753 1.051l-.122.063c-.69.31-1.254.79-1.616 1.416-.362.627-.494 1.353-.419 2.106.045.452-.107.964-.524 1.313a9.99 9.99 0 0 1-2.982 1.725 1.51 1.51 0 0 1-1.4-.203C13.42 20.75 12.723 20.5 12 20.5s-1.42.249-2.035.691a1.51 1.51 0 0 1-1.401.203 9.989 9.989 0 0 1-2.982-1.725 1.511 1.511 0 0 1-.524-1.313c.075-.753-.058-1.48-.42-2.106a3.414 3.414 0 0 0-1.39-1.307l-.225-.11a1.511 1.511 0 0 1-.875-1.113 10.057 10.057 0 0 1 0-3.44c.083-.484.39-.847.753-1.051l.122-.062c.69-.311 1.254-.79 1.616-1.417.361-.626.494-1.353.419-2.106a1.511 1.511 0 0 1 .524-1.313 9.99 9.99 0 0 1 2.982-1.725 1.511 1.511 0 0 1 1.4.203c.615.442 1.312.691 2.036.691s1.42-.249 2.035-.691m.957 1.769c-.866.57-1.887.922-2.992.922s-2.126-.353-2.992-.922A7.99 7.99 0 0 0 7.068 5.7c.06 1.033-.145 2.093-.697 3.05-.553.956-1.368 1.663-2.293 2.128a8.078 8.078 0 0 0 0 2.242c.925.465 1.74 1.172 2.293 2.13.552.955.757 2.015.697 3.048a7.99 7.99 0 0 0 1.94 1.123c.866-.57 1.887-.922 2.992-.922s2.126.353 2.992.922a7.993 7.993 0 0 0 1.94-1.122c-.06-1.034.145-2.094.697-3.05.552-.957 1.368-1.664 2.293-2.13a8.066 8.066 0 0 0 0-2.24c-.925-.466-1.74-1.173-2.293-2.13-.552-.956-.757-2.016-.697-3.05a7.99 7.99 0 0 0-1.94-1.122ZM12 8a4 4 0 1 1 0 8 4 4 0 0 1 0-8m0 2a2 2 0 1 0 0 4 2 2 0 0 0 0-4"/></g></svg></span><span class="micro">icon-xs · 12</span></div>
+      <div class="icon-cell" style="color:var(--w)"><span style="display:inline-block;width:14px;height:14px;vertical-align:middle;flex-shrink:0;color:currentColor;" data-mc="settings_3_line"><svg width="14" height="14" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><path fill="currentColor" d="M14.035 2.809c.37-.266.89-.39 1.401-.203a9.99 9.99 0 0 1 2.982 1.725c.417.35.57.861.524 1.313-.075.753.057 1.48.42 2.106.32.557.802.997 1.39 1.307l.225.11c.414.187.782.576.875 1.113a10.06 10.06 0 0 1 0 3.44c-.083.484-.39.847-.753 1.051l-.122.063c-.69.31-1.254.79-1.616 1.416-.362.627-.494 1.353-.419 2.106.045.452-.107.964-.524 1.313a9.99 9.99 0 0 1-2.982 1.725 1.51 1.51 0 0 1-1.4-.203C13.42 20.75 12.723 20.5 12 20.5s-1.42.249-2.035.691a1.51 1.51 0 0 1-1.401.203 9.989 9.989 0 0 1-2.982-1.725 1.511 1.511 0 0 1-.524-1.313c.075-.753-.058-1.48-.42-2.106a3.414 3.414 0 0 0-1.39-1.307l-.225-.11a1.511 1.511 0 0 1-.875-1.113 10.057 10.057 0 0 1 0-3.44c.083-.484.39-.847.753-1.051l.122-.062c.69-.311 1.254-.79 1.616-1.417.361-.626.494-1.353.419-2.106a1.511 1.511 0 0 1 .524-1.313 9.99 9.99 0 0 1 2.982-1.725 1.511 1.511 0 0 1 1.4.203c.615.442 1.312.691 2.036.691s1.42-.249 2.035-.691m.957 1.769c-.866.57-1.887.922-2.992.922s-2.126-.353-2.992-.922A7.99 7.99 0 0 0 7.068 5.7c.06 1.033-.145 2.093-.697 3.05-.553.956-1.368 1.663-2.293 2.128a8.078 8.078 0 0 0 0 2.242c.925.465 1.74 1.172 2.293 2.13.552.955.757 2.015.697 3.048a7.99 7.99 0 0 0 1.94 1.123c.866-.57 1.887-.922 2.992-.922s2.126.353 2.992.922a7.993 7.993 0 0 0 1.94-1.122c-.06-1.034.145-2.094.697-3.05.552-.957 1.368-1.664 2.293-2.13a8.066 8.066 0 0 0 0-2.24c-.925-.466-1.74-1.173-2.293-2.13-.552-.956-.757-2.016-.697-3.05a7.99 7.99 0 0 0-1.94-1.122ZM12 8a4 4 0 1 1 0 8 4 4 0 0 1 0-8m0 2a2 2 0 1 0 0 4 2 2 0 0 0 0-4"/></g></svg></span><span class="micro">icon-sm · 14</span></div>
+      <div class="icon-cell" style="color:var(--w)"><span style="display:inline-block;width:16px;height:16px;vertical-align:middle;flex-shrink:0;color:currentColor;" data-mc="settings_3_line"><svg width="16" height="16" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><path fill="currentColor" d="M14.035 2.809c.37-.266.89-.39 1.401-.203a9.99 9.99 0 0 1 2.982 1.725c.417.35.57.861.524 1.313-.075.753.057 1.48.42 2.106.32.557.802.997 1.39 1.307l.225.11c.414.187.782.576.875 1.113a10.06 10.06 0 0 1 0 3.44c-.083.484-.39.847-.753 1.051l-.122.063c-.69.31-1.254.79-1.616 1.416-.362.627-.494 1.353-.419 2.106.045.452-.107.964-.524 1.313a9.99 9.99 0 0 1-2.982 1.725 1.51 1.51 0 0 1-1.4-.203C13.42 20.75 12.723 20.5 12 20.5s-1.42.249-2.035.691a1.51 1.51 0 0 1-1.401.203 9.989 9.989 0 0 1-2.982-1.725 1.511 1.511 0 0 1-.524-1.313c.075-.753-.058-1.48-.42-2.106a3.414 3.414 0 0 0-1.39-1.307l-.225-.11a1.511 1.511 0 0 1-.875-1.113 10.057 10.057 0 0 1 0-3.44c.083-.484.39-.847.753-1.051l.122-.062c.69-.311 1.254-.79 1.616-1.417.361-.626.494-1.353.419-2.106a1.511 1.511 0 0 1 .524-1.313 9.99 9.99 0 0 1 2.982-1.725 1.511 1.511 0 0 1 1.4.203c.615.442 1.312.691 2.036.691s1.42-.249 2.035-.691m.957 1.769c-.866.57-1.887.922-2.992.922s-2.126-.353-2.992-.922A7.99 7.99 0 0 0 7.068 5.7c.06 1.033-.145 2.093-.697 3.05-.553.956-1.368 1.663-2.293 2.128a8.078 8.078 0 0 0 0 2.242c.925.465 1.74 1.172 2.293 2.13.552.955.757 2.015.697 3.048a7.99 7.99 0 0 0 1.94 1.123c.866-.57 1.887-.922 2.992-.922s2.126.353 2.992.922a7.993 7.993 0 0 0 1.94-1.122c-.06-1.034.145-2.094.697-3.05.552-.957 1.368-1.664 2.293-2.13a8.066 8.066 0 0 0 0-2.24c-.925-.466-1.74-1.173-2.293-2.13-.552-.956-.757-2.016-.697-3.05a7.99 7.99 0 0 0-1.94-1.122ZM12 8a4 4 0 1 1 0 8 4 4 0 0 1 0-8m0 2a2 2 0 1 0 0 4 2 2 0 0 0 0-4"/></g></svg></span><span class="micro">icon-md · 16</span></div>
+      <div class="icon-cell" style="color:var(--w)"><span style="display:inline-block;width:20px;height:20px;vertical-align:middle;flex-shrink:0;color:currentColor;" data-mc="settings_3_line"><svg width="20" height="20" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><path fill="currentColor" d="M14.035 2.809c.37-.266.89-.39 1.401-.203a9.99 9.99 0 0 1 2.982 1.725c.417.35.57.861.524 1.313-.075.753.057 1.48.42 2.106.32.557.802.997 1.39 1.307l.225.11c.414.187.782.576.875 1.113a10.06 10.06 0 0 1 0 3.44c-.083.484-.39.847-.753 1.051l-.122.063c-.69.31-1.254.79-1.616 1.416-.362.627-.494 1.353-.419 2.106.045.452-.107.964-.524 1.313a9.99 9.99 0 0 1-2.982 1.725 1.51 1.51 0 0 1-1.4-.203C13.42 20.75 12.723 20.5 12 20.5s-1.42.249-2.035.691a1.51 1.51 0 0 1-1.401.203 9.989 9.989 0 0 1-2.982-1.725 1.511 1.511 0 0 1-.524-1.313c.075-.753-.058-1.48-.42-2.106a3.414 3.414 0 0 0-1.39-1.307l-.225-.11a1.511 1.511 0 0 1-.875-1.113 10.057 10.057 0 0 1 0-3.44c.083-.484.39-.847.753-1.051l.122-.062c.69-.311 1.254-.79 1.616-1.417.361-.626.494-1.353.419-2.106a1.511 1.511 0 0 1 .524-1.313 9.99 9.99 0 0 1 2.982-1.725 1.511 1.511 0 0 1 1.4.203c.615.442 1.312.691 2.036.691s1.42-.249 2.035-.691m.957 1.769c-.866.57-1.887.922-2.992.922s-2.126-.353-2.992-.922A7.99 7.99 0 0 0 7.068 5.7c.06 1.033-.145 2.093-.697 3.05-.553.956-1.368 1.663-2.293 2.128a8.078 8.078 0 0 0 0 2.242c.925.465 1.74 1.172 2.293 2.13.552.955.757 2.015.697 3.048a7.99 7.99 0 0 0 1.94 1.123c.866-.57 1.887-.922 2.992-.922s2.126.353 2.992.922a7.993 7.993 0 0 0 1.94-1.122c-.06-1.034.145-2.094.697-3.05.552-.957 1.368-1.664 2.293-2.13a8.066 8.066 0 0 0 0-2.24c-.925-.466-1.74-1.173-2.293-2.13-.552-.956-.757-2.016-.697-3.05a7.99 7.99 0 0 0-1.94-1.122ZM12 8a4 4 0 1 1 0 8 4 4 0 0 1 0-8m0 2a2 2 0 1 0 0 4 2 2 0 0 0 0-4"/></g></svg></span><span class="micro">icon-lg · 20</span></div>
+      <div class="icon-cell" style="color:var(--w)"><span style="display:inline-block;width:24px;height:24px;vertical-align:middle;flex-shrink:0;color:currentColor;" data-mc="settings_3_line"><svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><path fill="currentColor" d="M14.035 2.809c.37-.266.89-.39 1.401-.203a9.99 9.99 0 0 1 2.982 1.725c.417.35.57.861.524 1.313-.075.753.057 1.48.42 2.106.32.557.802.997 1.39 1.307l.225.11c.414.187.782.576.875 1.113a10.06 10.06 0 0 1 0 3.44c-.083.484-.39.847-.753 1.051l-.122.063c-.69.31-1.254.79-1.616 1.416-.362.627-.494 1.353-.419 2.106.045.452-.107.964-.524 1.313a9.99 9.99 0 0 1-2.982 1.725 1.51 1.51 0 0 1-1.4-.203C13.42 20.75 12.723 20.5 12 20.5s-1.42.249-2.035.691a1.51 1.51 0 0 1-1.401.203 9.989 9.989 0 0 1-2.982-1.725 1.511 1.511 0 0 1-.524-1.313c.075-.753-.058-1.48-.42-2.106a3.414 3.414 0 0 0-1.39-1.307l-.225-.11a1.511 1.511 0 0 1-.875-1.113 10.057 10.057 0 0 1 0-3.44c.083-.484.39-.847.753-1.051l.122-.062c.69-.311 1.254-.79 1.616-1.417.361-.626.494-1.353.419-2.106a1.511 1.511 0 0 1 .524-1.313 9.99 9.99 0 0 1 2.982-1.725 1.511 1.511 0 0 1 1.4.203c.615.442 1.312.691 2.036.691s1.42-.249 2.035-.691m.957 1.769c-.866.57-1.887.922-2.992.922s-2.126-.353-2.992-.922A7.99 7.99 0 0 0 7.068 5.7c.06 1.033-.145 2.093-.697 3.05-.553.956-1.368 1.663-2.293 2.128a8.078 8.078 0 0 0 0 2.242c.925.465 1.74 1.172 2.293 2.13.552.955.757 2.015.697 3.048a7.99 7.99 0 0 0 1.94 1.123c.866-.57 1.887-.922 2.992-.922s2.126.353 2.992.922a7.993 7.993 0 0 0 1.94-1.122c-.06-1.034.145-2.094.697-3.05.552-.957 1.368-1.664 2.293-2.13a8.066 8.066 0 0 0 0-2.24c-.925-.466-1.74-1.173-2.293-2.13-.552-.956-.757-2.016-.697-3.05a7.99 7.99 0 0 0-1.94-1.122ZM12 8a4 4 0 1 1 0 8 4 4 0 0 1 0-8m0 2a2 2 0 1 0 0 4 2 2 0 0 0 0-4"/></g></svg></span><span class="micro">icon-xl · 24</span></div>
+      <div class="icon-cell" style="color:var(--w)"><span style="display:inline-block;width:40px;height:40px;vertical-align:middle;flex-shrink:0;color:currentColor;" data-mc="settings_3_line"><svg width="40" height="40" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><path fill="currentColor" d="M14.035 2.809c.37-.266.89-.39 1.401-.203a9.99 9.99 0 0 1 2.982 1.725c.417.35.57.861.524 1.313-.075.753.057 1.48.42 2.106.32.557.802.997 1.39 1.307l.225.11c.414.187.782.576.875 1.113a10.06 10.06 0 0 1 0 3.44c-.083.484-.39.847-.753 1.051l-.122.063c-.69.31-1.254.79-1.616 1.416-.362.627-.494 1.353-.419 2.106.045.452-.107.964-.524 1.313a9.99 9.99 0 0 1-2.982 1.725 1.51 1.51 0 0 1-1.4-.203C13.42 20.75 12.723 20.5 12 20.5s-1.42.249-2.035.691a1.51 1.51 0 0 1-1.401.203 9.989 9.989 0 0 1-2.982-1.725 1.511 1.511 0 0 1-.524-1.313c.075-.753-.058-1.48-.42-2.106a3.414 3.414 0 0 0-1.39-1.307l-.225-.11a1.511 1.511 0 0 1-.875-1.113 10.057 10.057 0 0 1 0-3.44c.083-.484.39-.847.753-1.051l.122-.062c.69-.311 1.254-.79 1.616-1.417.361-.626.494-1.353.419-2.106a1.511 1.511 0 0 1 .524-1.313 9.99 9.99 0 0 1 2.982-1.725 1.511 1.511 0 0 1 1.4.203c.615.442 1.312.691 2.036.691s1.42-.249 2.035-.691m.957 1.769c-.866.57-1.887.922-2.992.922s-2.126-.353-2.992-.922A7.99 7.99 0 0 0 7.068 5.7c.06 1.033-.145 2.093-.697 3.05-.553.956-1.368 1.663-2.293 2.128a8.078 8.078 0 0 0 0 2.242c.925.465 1.74 1.172 2.293 2.13.552.955.757 2.015.697 3.048a7.99 7.99 0 0 0 1.94 1.123c.866-.57 1.887-.922 2.992-.922s2.126.353 2.992.922a7.993 7.993 0 0 0 1.94-1.122c-.06-1.034.145-2.094.697-3.05.552-.957 1.368-1.664 2.293-2.13a8.066 8.066 0 0 0 0-2.24c-.925-.466-1.74-1.173-2.293-2.13-.552-.956-.757-2.016-.697-3.05a7.99 7.99 0 0 0-1.94-1.122ZM12 8a4 4 0 1 1 0 8 4 4 0 0 1 0-8m0 2a2 2 0 1 0 0 4 2 2 0 0 0 0-4"/></g></svg></span><span class="micro">icon-2xl · 40</span></div>
+    </div>
+
+    <div class="group-title">Variants (line vs fill)</div>
+    <div class="icon-variant">
+      <div class="icon-cell" style="color:#FFFFFF"><span style="display:inline-block;width:32px;height:32px;vertical-align:middle;flex-shrink:0;color:currentColor;" data-mc="heart_line"><svg width="32" height="32" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><path fill="currentColor" d="M18.494 3.801c2.095 1.221 3.569 3.7 3.504 6.592-.081 3.61-2.89 6.794-7.679 9.638-.71.422-1.458.969-2.319.969-.845 0-1.625-.557-2.32-.97-4.787-2.843-7.597-6.028-7.678-9.637-.065-2.892 1.409-5.37 3.504-6.592C7.466 2.66 9.928 2.653 12 4.338c2.072-1.685 4.534-1.679 6.494-.537M17.487 5.53c-1.394-.812-3.136-.783-4.644.743a1.188 1.188 0 0 1-1.686 0c-1.508-1.526-3.25-1.555-4.644-.743-1.444.842-2.56 2.628-2.511 4.82.056 2.511 2.04 5.194 6.7 7.962.408.243.834.554 1.298.683.464-.129.89-.44 1.298-.683 4.66-2.768 6.644-5.45 6.7-7.963.05-2.19-1.067-3.977-2.511-4.819"/></g></svg></span><span class="micro">line · default</span></div>
+      <div class="icon-cell" style="color:#FFFFFF"><span style="display:inline-block;width:32px;height:32px;vertical-align:middle;flex-shrink:0;color:currentColor;" data-mc="heart_fill"><svg width="32" height="32" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g fill="none"><path fill="currentColor" d="M18.494 3.801c2.095 1.221 3.569 3.7 3.504 6.592C21.86 16.5 13.5 21 12 21s-9.861-4.5-9.998-10.607c-.065-2.892 1.409-5.37 3.504-6.592C7.466 2.66 9.928 2.653 12 4.338c2.072-1.685 4.534-1.679 6.494-.537"/></g></svg></span><span class="micro">fill · active</span></div>
+    </div>
+  </section>
+
+  <!-- 6. BUTTONS -->
+  <section>
+    <h2>Buttons</h2>
+    <p class="desc">All variants × default / hover / focus / disabled. Focus ring is neutral W (not brand blue).</p>
+
+    <div class="btn-row">
+      <div class="btn-row-label">Primary</div>
+      <div class="state-cell"><span class="micro">default</span><button class="btn btn-primary"><span style="display:inline-block;width:14px;height:14px;vertical-align:middle;flex-shrink:0;color:currentColor;" data-mc="rocket_line"><svg width="14" height="14" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g fill="none"><path fill="currentColor" d="m18.42 2.797.386.056c.6.095 1.272.254 1.685.667.414.414.573 1.086.668 1.686l.056.385c.126.91.159 2.103-.056 3.427-.424 2.613-1.815 5.73-5.308 8.145a4.61 4.61 0 0 0-.017.537l.017.543c.01.362.004.723-.096 1.07-.19.66-.867 1.095-1.5 1.407l-.31.147-.4.176-.273.11c-.707.27-1.56.459-2.118-.1-.253-.253-.37-.597-.464-.941l-.046-.172c-.16-.607-.341-1.21-.567-1.794a3.04 3.04 0 0 1-.198.218c-.545.544-1.284.818-2.023 1.03l-.491.135-.49.13-.478.12-.432.1-.517.11-.323.063a1.009 1.009 0 0 1-1.177-1.177l.111-.551.129-.578.124-.51.225-.845c.223-.82.494-1.665 1.1-2.27l.099-.095-.763-.274-.767-.264c-.449-.148-.921-.304-1.247-.63-.596-.596-.343-1.526-.046-2.257l.166-.387.137-.301c.317-.674.767-1.45 1.483-1.656.347-.1.707-.106 1.07-.097l.543.018c.18.003.36 0 .537-.017 2.414-3.493 5.532-4.884 8.145-5.308a11.693 11.693 0 0 1 3.426-.056m-3.106 2.03c-2.198.357-4.869 1.534-6.953 4.669-.253.38-.68.561-1.115.63-.246.04-.494.05-.743.05l-.747-.011c-.124 0-.249 0-.373.006-.304.404-.516.884-.675 1.361l1.5.545.617.233c1.128.442 2.22.977 3.06 1.817 1.415 1.415 2.134 3.266 2.654 5.157.456-.16.914-.364 1.302-.655l.006-.373-.011-.746c0-.248.01-.496.05-.744.068-.435.25-.862.63-1.115 3.135-2.084 4.312-4.755 4.669-6.953.18-1.11.15-2.102.049-2.833a5.378 5.378 0 0 0-.193-.895 5.375 5.375 0 0 0-.895-.192 9.697 9.697 0 0 0-2.832.05ZM7.05 15.535c-.35.423-.513.978-.644 1.528l-.108.468-.055.226.694-.163c.55-.13 1.106-.295 1.528-.645a1 1 0 1 0-1.415-1.414m5.657-7.07a2 2 0 1 1 2.829 2.828 2 2 0 0 1-2.829-2.829Z"/></g></svg></span>Run agent</button></div>
+      <div class="state-cell"><span class="micro">hover</span><button class="btn btn-primary hover"><span style="display:inline-block;width:14px;height:14px;vertical-align:middle;flex-shrink:0;color:currentColor;" data-mc="rocket_line"><svg width="14" height="14" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g fill="none"><path fill="currentColor" d="m18.42 2.797.386.056c.6.095 1.272.254 1.685.667.414.414.573 1.086.668 1.686l.056.385c.126.91.159 2.103-.056 3.427-.424 2.613-1.815 5.73-5.308 8.145a4.61 4.61 0 0 0-.017.537l.017.543c.01.362.004.723-.096 1.07-.19.66-.867 1.095-1.5 1.407l-.31.147-.4.176-.273.11c-.707.27-1.56.459-2.118-.1-.253-.253-.37-.597-.464-.941l-.046-.172c-.16-.607-.341-1.21-.567-1.794a3.04 3.04 0 0 1-.198.218c-.545.544-1.284.818-2.023 1.03l-.491.135-.49.13-.478.12-.432.1-.517.11-.323.063a1.009 1.009 0 0 1-1.177-1.177l.111-.551.129-.578.124-.51.225-.845c.223-.82.494-1.665 1.1-2.27l.099-.095-.763-.274-.767-.264c-.449-.148-.921-.304-1.247-.63-.596-.596-.343-1.526-.046-2.257l.166-.387.137-.301c.317-.674.767-1.45 1.483-1.656.347-.1.707-.106 1.07-.097l.543.018c.18.003.36 0 .537-.017 2.414-3.493 5.532-4.884 8.145-5.308a11.693 11.693 0 0 1 3.426-.056m-3.106 2.03c-2.198.357-4.869 1.534-6.953 4.669-.253.38-.68.561-1.115.63-.246.04-.494.05-.743.05l-.747-.011c-.124 0-.249 0-.373.006-.304.404-.516.884-.675 1.361l1.5.545.617.233c1.128.442 2.22.977 3.06 1.817 1.415 1.415 2.134 3.266 2.654 5.157.456-.16.914-.364 1.302-.655l.006-.373-.011-.746c0-.248.01-.496.05-.744.068-.435.25-.862.63-1.115 3.135-2.084 4.312-4.755 4.669-6.953.18-1.11.15-2.102.049-2.833a5.378 5.378 0 0 0-.193-.895 5.375 5.375 0 0 0-.895-.192 9.697 9.697 0 0 0-2.832.05ZM7.05 15.535c-.35.423-.513.978-.644 1.528l-.108.468-.055.226.694-.163c.55-.13 1.106-.295 1.528-.645a1 1 0 1 0-1.415-1.414m5.657-7.07a2 2 0 1 1 2.829 2.828 2 2 0 0 1-2.829-2.829Z"/></g></svg></span>Run agent</button></div>
+      <div class="state-cell"><span class="micro">focus</span><button class="btn btn-primary focus"><span style="display:inline-block;width:14px;height:14px;vertical-align:middle;flex-shrink:0;color:currentColor;" data-mc="rocket_line"><svg width="14" height="14" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g fill="none"><path fill="currentColor" d="m18.42 2.797.386.056c.6.095 1.272.254 1.685.667.414.414.573 1.086.668 1.686l.056.385c.126.91.159 2.103-.056 3.427-.424 2.613-1.815 5.73-5.308 8.145a4.61 4.61 0 0 0-.017.537l.017.543c.01.362.004.723-.096 1.07-.19.66-.867 1.095-1.5 1.407l-.31.147-.4.176-.273.11c-.707.27-1.56.459-2.118-.1-.253-.253-.37-.597-.464-.941l-.046-.172c-.16-.607-.341-1.21-.567-1.794a3.04 3.04 0 0 1-.198.218c-.545.544-1.284.818-2.023 1.03l-.491.135-.49.13-.478.12-.432.1-.517.11-.323.063a1.009 1.009 0 0 1-1.177-1.177l.111-.551.129-.578.124-.51.225-.845c.223-.82.494-1.665 1.1-2.27l.099-.095-.763-.274-.767-.264c-.449-.148-.921-.304-1.247-.63-.596-.596-.343-1.526-.046-2.257l.166-.387.137-.301c.317-.674.767-1.45 1.483-1.656.347-.1.707-.106 1.07-.097l.543.018c.18.003.36 0 .537-.017 2.414-3.493 5.532-4.884 8.145-5.308a11.693 11.693 0 0 1 3.426-.056m-3.106 2.03c-2.198.357-4.869 1.534-6.953 4.669-.253.38-.68.561-1.115.63-.246.04-.494.05-.743.05l-.747-.011c-.124 0-.249 0-.373.006-.304.404-.516.884-.675 1.361l1.5.545.617.233c1.128.442 2.22.977 3.06 1.817 1.415 1.415 2.134 3.266 2.654 5.157.456-.16.914-.364 1.302-.655l.006-.373-.011-.746c0-.248.01-.496.05-.744.068-.435.25-.862.63-1.115 3.135-2.084 4.312-4.755 4.669-6.953.18-1.11.15-2.102.049-2.833a5.378 5.378 0 0 0-.193-.895 5.375 5.375 0 0 0-.895-.192 9.697 9.697 0 0 0-2.832.05ZM7.05 15.535c-.35.423-.513.978-.644 1.528l-.108.468-.055.226.694-.163c.55-.13 1.106-.295 1.528-.645a1 1 0 1 0-1.415-1.414m5.657-7.07a2 2 0 1 1 2.829 2.828 2 2 0 0 1-2.829-2.829Z"/></g></svg></span>Run agent</button></div>
+      <div class="state-cell"><span class="micro">disabled</span><button class="btn btn-primary disabled"><span style="display:inline-block;width:14px;height:14px;vertical-align:middle;flex-shrink:0;color:currentColor;" data-mc="rocket_line"><svg width="14" height="14" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g fill="none"><path fill="currentColor" d="m18.42 2.797.386.056c.6.095 1.272.254 1.685.667.414.414.573 1.086.668 1.686l.056.385c.126.91.159 2.103-.056 3.427-.424 2.613-1.815 5.73-5.308 8.145a4.61 4.61 0 0 0-.017.537l.017.543c.01.362.004.723-.096 1.07-.19.66-.867 1.095-1.5 1.407l-.31.147-.4.176-.273.11c-.707.27-1.56.459-2.118-.1-.253-.253-.37-.597-.464-.941l-.046-.172c-.16-.607-.341-1.21-.567-1.794a3.04 3.04 0 0 1-.198.218c-.545.544-1.284.818-2.023 1.03l-.491.135-.49.13-.478.12-.432.1-.517.11-.323.063a1.009 1.009 0 0 1-1.177-1.177l.111-.551.129-.578.124-.51.225-.845c.223-.82.494-1.665 1.1-2.27l.099-.095-.763-.274-.767-.264c-.449-.148-.921-.304-1.247-.63-.596-.596-.343-1.526-.046-2.257l.166-.387.137-.301c.317-.674.767-1.45 1.483-1.656.347-.1.707-.106 1.07-.097l.543.018c.18.003.36 0 .537-.017 2.414-3.493 5.532-4.884 8.145-5.308a11.693 11.693 0 0 1 3.426-.056m-3.106 2.03c-2.198.357-4.869 1.534-6.953 4.669-.253.38-.68.561-1.115.63-.246.04-.494.05-.743.05l-.747-.011c-.124 0-.249 0-.373.006-.304.404-.516.884-.675 1.361l1.5.545.617.233c1.128.442 2.22.977 3.06 1.817 1.415 1.415 2.134 3.266 2.654 5.157.456-.16.914-.364 1.302-.655l.006-.373-.011-.746c0-.248.01-.496.05-.744.068-.435.25-.862.63-1.115 3.135-2.084 4.312-4.755 4.669-6.953.18-1.11.15-2.102.049-2.833a5.378 5.378 0 0 0-.193-.895 5.375 5.375 0 0 0-.895-.192 9.697 9.697 0 0 0-2.832.05ZM7.05 15.535c-.35.423-.513.978-.644 1.528l-.108.468-.055.226.694-.163c.55-.13 1.106-.295 1.528-.645a1 1 0 1 0-1.415-1.414m5.657-7.07a2 2 0 1 1 2.829 2.828 2 2 0 0 1-2.829-2.829Z"/></g></svg></span>Run agent</button></div>
+    </div>
+
+    <div class="btn-row">
+      <div class="btn-row-label">Secondary</div>
+      <div class="state-cell"><span class="micro">default</span><button class="btn btn-secondary">Cancel</button></div>
+      <div class="state-cell"><span class="micro">hover</span><button class="btn btn-secondary hover">Cancel</button></div>
+      <div class="state-cell"><span class="micro">focus</span><button class="btn btn-secondary focus">Cancel</button></div>
+      <div class="state-cell"><span class="micro">disabled</span><button class="btn btn-secondary disabled">Cancel</button></div>
+    </div>
+
+    <div class="btn-row">
+      <div class="btn-row-label">Ghost</div>
+      <div class="state-cell"><span class="micro">default</span><button class="btn btn-ghost"><span style="display:inline-block;width:14px;height:14px;vertical-align:middle;flex-shrink:0;color:currentColor;" data-mc="more_1_line"><svg width="14" height="14" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g fill="none"><path fill="currentColor" d="M6 10.5a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3m6 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3m6 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3"/></g></svg></span>Options</button></div>
+      <div class="state-cell"><span class="micro">hover</span><button class="btn btn-ghost hover"><span style="display:inline-block;width:14px;height:14px;vertical-align:middle;flex-shrink:0;color:currentColor;" data-mc="more_1_line"><svg width="14" height="14" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g fill="none"><path fill="currentColor" d="M6 10.5a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3m6 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3m6 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3"/></g></svg></span>Options</button></div>
+      <div class="state-cell"><span class="micro">focus</span><button class="btn btn-ghost focus"><span style="display:inline-block;width:14px;height:14px;vertical-align:middle;flex-shrink:0;color:currentColor;" data-mc="more_1_line"><svg width="14" height="14" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g fill="none"><path fill="currentColor" d="M6 10.5a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3m6 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3m6 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3"/></g></svg></span>Options</button></div>
+      <div class="state-cell"><span class="micro">disabled</span><button class="btn btn-ghost disabled"><span style="display:inline-block;width:14px;height:14px;vertical-align:middle;flex-shrink:0;color:currentColor;" data-mc="more_1_line"><svg width="14" height="14" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g fill="none"><path fill="currentColor" d="M6 10.5a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3m6 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3m6 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3"/></g></svg></span>Options</button></div>
+    </div>
+
+    <div class="btn-row">
+      <div class="btn-row-label">Danger</div>
+      <div class="state-cell"><span class="micro">default</span><button class="btn btn-danger"><span style="display:inline-block;width:14px;height:14px;vertical-align:middle;flex-shrink:0;color:currentColor;" data-mc="delete_2_line"><svg width="14" height="14" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g fill="none"><path fill="currentColor" d="M14.28 2a2 2 0 0 1 1.897 1.368L16.72 5H20a1 1 0 1 1 0 2l-.003.071-.867 12.143A3 3 0 0 1 16.138 22H7.862a3 3 0 0 1-2.992-2.786L4.003 7.07A1.01 1.01 0 0 1 4 7a1 1 0 0 1 0-2h3.28l.543-1.632A2 2 0 0 1 9.721 2zm3.717 5H6.003l.862 12.071a1 1 0 0 0 .997.929h8.276a1 1 0 0 0 .997-.929zM10 10a1 1 0 0 1 .993.883L11 11v5a1 1 0 0 1-1.993.117L9 16v-5a1 1 0 0 1 1-1m4 0a1 1 0 0 1 1 1v5a1 1 0 1 1-2 0v-5a1 1 0 0 1 1-1m.28-6H9.72l-.333 1h5.226z"/></g></svg></span>Delete agent</button></div>
+      <div class="state-cell"><span class="micro">hover</span><button class="btn btn-danger hover"><span style="display:inline-block;width:14px;height:14px;vertical-align:middle;flex-shrink:0;color:currentColor;" data-mc="delete_2_line"><svg width="14" height="14" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g fill="none"><path fill="currentColor" d="M14.28 2a2 2 0 0 1 1.897 1.368L16.72 5H20a1 1 0 1 1 0 2l-.003.071-.867 12.143A3 3 0 0 1 16.138 22H7.862a3 3 0 0 1-2.992-2.786L4.003 7.07A1.01 1.01 0 0 1 4 7a1 1 0 0 1 0-2h3.28l.543-1.632A2 2 0 0 1 9.721 2zm3.717 5H6.003l.862 12.071a1 1 0 0 0 .997.929h8.276a1 1 0 0 0 .997-.929zM10 10a1 1 0 0 1 .993.883L11 11v5a1 1 0 0 1-1.993.117L9 16v-5a1 1 0 0 1 1-1m4 0a1 1 0 0 1 1 1v5a1 1 0 1 1-2 0v-5a1 1 0 0 1 1-1m.28-6H9.72l-.333 1h5.226z"/></g></svg></span>Delete agent</button></div>
+      <div class="state-cell"><span class="micro">focus</span><button class="btn btn-danger focus"><span style="display:inline-block;width:14px;height:14px;vertical-align:middle;flex-shrink:0;color:currentColor;" data-mc="delete_2_line"><svg width="14" height="14" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g fill="none"><path fill="currentColor" d="M14.28 2a2 2 0 0 1 1.897 1.368L16.72 5H20a1 1 0 1 1 0 2l-.003.071-.867 12.143A3 3 0 0 1 16.138 22H7.862a3 3 0 0 1-2.992-2.786L4.003 7.07A1.01 1.01 0 0 1 4 7a1 1 0 0 1 0-2h3.28l.543-1.632A2 2 0 0 1 9.721 2zm3.717 5H6.003l.862 12.071a1 1 0 0 0 .997.929h8.276a1 1 0 0 0 .997-.929zM10 10a1 1 0 0 1 .993.883L11 11v5a1 1 0 0 1-1.993.117L9 16v-5a1 1 0 0 1 1-1m4 0a1 1 0 0 1 1 1v5a1 1 0 1 1-2 0v-5a1 1 0 0 1 1-1m.28-6H9.72l-.333 1h5.226z"/></g></svg></span>Delete agent</button></div>
+      <div class="state-cell"><span class="micro">disabled</span><button class="btn btn-danger disabled"><span style="display:inline-block;width:14px;height:14px;vertical-align:middle;flex-shrink:0;color:currentColor;" data-mc="delete_2_line"><svg width="14" height="14" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g fill="none"><path fill="currentColor" d="M14.28 2a2 2 0 0 1 1.897 1.368L16.72 5H20a1 1 0 1 1 0 2l-.003.071-.867 12.143A3 3 0 0 1 16.138 22H7.862a3 3 0 0 1-2.992-2.786L4.003 7.07A1.01 1.01 0 0 1 4 7a1 1 0 0 1 0-2h3.28l.543-1.632A2 2 0 0 1 9.721 2zm3.717 5H6.003l.862 12.071a1 1 0 0 0 .997.929h8.276a1 1 0 0 0 .997-.929zM10 10a1 1 0 0 1 .993.883L11 11v5a1 1 0 0 1-1.993.117L9 16v-5a1 1 0 0 1 1-1m4 0a1 1 0 0 1 1 1v5a1 1 0 1 1-2 0v-5a1 1 0 0 1 1-1m.28-6H9.72l-.333 1h5.226z"/></g></svg></span>Delete agent</button></div>
+    </div>
+  </section>
+
+  <!-- 7. INPUTS -->
+  <section>
+    <h2>Form Inputs</h2>
+    <p class="desc">Default · focus · filled · disabled · error. Neutral W focus halo.</p>
+    <div class="field-grid">
+      <div class="field"><span class="label">default</span><input class="input" placeholder="Agent name…"></div>
+      <div class="field"><span class="label">focus</span><input class="input focus" placeholder="Agent name…"></div>
+      <div class="field"><span class="label">filled</span><input class="input" value="research-genius-001"></div>
+      <div class="field"><span class="label">disabled</span><input class="input disabled" value="locked-runtime" disabled></div>
+      <div class="field"><span class="label">error</span><input class="input error" value="invalid name @!"><div class="err-msg">Agent name must be lowercase alphanumeric.</div></div>
+      <div class="field"><span class="label">textarea — default</span><textarea class="input" placeholder="Describe what this agent should do…"></textarea></div>
+      <div class="field" style="grid-column:1 / -1"><span class="label">textarea — focus</span><textarea class="input focus">Observe three repositories, then generate a refactor plan.</textarea></div>
+    </div>
+  </section>
+
+  <!-- 8. SELECT -->
+  <section>
+    <h2>Select / Dropdown</h2>
+    <p class="desc">Closed · open · disabled. Menu uses Modal-level shadow on dark surface.</p>
+    <div class="row" style="align-items:flex-start">
+      <div class="col">
+        <span class="label">closed · default</span>
+        <div class="select-wrap"><div class="select placeholder">Choose runtime <span style="display:inline-block;width:16px;height:16px;vertical-align:middle;flex-shrink:0;color:currentColor;" data-mc="down_line"><svg width="16" height="16" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><path fill="currentColor" d="M12.707 15.707a1 1 0 0 1-1.414 0L5.636 10.05A1 1 0 1 1 7.05 8.636l4.95 4.95 4.95-4.95a1 1 0 0 1 1.414 1.414l-5.657 5.657Z"/></g></svg></span></div></div>
+      </div>
+      <div class="col">
+        <span class="label">open</span>
+        <div class="select-wrap">
+          <div class="select open">Node.js 20 <span style="display:inline-block;width:16px;height:16px;vertical-align:middle;flex-shrink:0;color:currentColor;" data-mc="up_line"><svg width="16" height="16" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><path fill="currentColor" d="M11.293 8.293a1 1 0 0 1 1.414 0l5.657 5.657a1 1 0 0 1-1.414 1.414L12 10.414l-4.95 4.95a1 1 0 0 1-1.414-1.414l5.657-5.657Z"/></g></svg></span></div>
+          <div class="select-menu">
+            <div class="menu-item">Node.js 18</div>
+            <div class="menu-item">Node.js 20 <span style="display:inline-block;width:16px;height:16px;vertical-align:middle;flex-shrink:0;color:currentColor;" data-mc="check_line"><svg width="16" height="16" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><path fill="currentColor" d="M21.192 5.465a1 1 0 0 1 0 1.414L9.95 18.122a1.1 1.1 0 0 1-1.556 0l-5.586-5.586a1 1 0 1 1 1.415-1.415l4.95 4.95L19.777 5.465a1 1 0 0 1 1.414 0Z"/></g></svg></span></div>
+            <div class="menu-item">Python 3.12</div>
+            <div class="menu-item disabled">Deno 2 (coming soon)</div>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <span class="label">disabled</span>
+        <div class="select-wrap"><div class="select disabled">Locked runtime <span style="display:inline-block;width:16px;height:16px;vertical-align:middle;flex-shrink:0;color:currentColor;" data-mc="down_line"><svg width="16" height="16" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><path fill="currentColor" d="M12.707 15.707a1 1 0 0 1-1.414 0L5.636 10.05A1 1 0 1 1 7.05 8.636l4.95 4.95 4.95-4.95a1 1 0 0 1 1.414 1.414l-5.657 5.657Z"/></g></svg></span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9. SEARCH -->
+  <section>
+    <h2>Search</h2>
+    <p class="desc">Empty · filled (with clear button) · loading.</p>
+    <div class="row" style="align-items:flex-start">
+      <div class="col">
+        <span class="label">empty</span>
+        <div class="search-wrap">
+          <span class="search-icon-l"><span style="display:inline-block;width:16px;height:16px;vertical-align:middle;flex-shrink:0;color:currentColor;" data-mc="search_line"><svg width="16" height="16" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><path fill="currentColor" d="M10.5 2a8.5 8.5 0 1 0 5.262 15.176l3.652 3.652a1 1 0 0 0 1.414-1.414l-3.652-3.652A8.5 8.5 0 0 0 10.5 2M4 10.5a6.5 6.5 0 1 1 13 0 6.5 6.5 0 0 1-13 0"/></g></svg></span></span>
+          <input class="search-input" placeholder="Search agents, projects, runs…">
+        </div>
+      </div>
+      <div class="col">
+        <span class="label">filled</span>
+        <div class="search-wrap">
+          <span class="search-icon-l"><span style="display:inline-block;width:16px;height:16px;vertical-align:middle;flex-shrink:0;color:currentColor;" data-mc="search_line"><svg width="16" height="16" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><path fill="currentColor" d="M10.5 2a8.5 8.5 0 1 0 5.262 15.176l3.652 3.652a1 1 0 0 0 1.414-1.414l-3.652-3.652A8.5 8.5 0 0 0 10.5 2M4 10.5a6.5 6.5 0 1 1 13 0 6.5 6.5 0 0 1-13 0"/></g></svg></span></span>
+          <input class="search-input" value="refactor-plan">
+          <span class="search-icon-r"><span style="display:inline-block;width:16px;height:16px;vertical-align:middle;flex-shrink:0;color:currentColor;" data-mc="close_circle_fill"><svg width="16" height="16" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g fill="none"><path fill="currentColor" d="M12 2c5.523 0 10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12 6.477 2 12 2M9.879 8.464a1 1 0 0 0-1.498 1.32l.084.095 2.12 2.12-2.12 2.122a1 1 0 0 0 1.32 1.498l.094-.083L12 13.414l2.121 2.122a1 1 0 0 0 1.498-1.32l-.083-.095L13.414 12l2.122-2.121a1 1 0 0 0-1.32-1.498l-.095.083L12 10.586z"/></g></svg></span></span>
+        </div>
+      </div>
+      <div class="col">
+        <span class="label">loading</span>
+        <div class="search-wrap">
+          <span class="search-icon-l"><span style="display:inline-block;width:16px;height:16px;vertical-align:middle;flex-shrink:0;color:currentColor;" data-mc="search_line"><svg width="16" height="16" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><path fill="currentColor" d="M10.5 2a8.5 8.5 0 1 0 5.262 15.176l3.652 3.652a1 1 0 0 0 1.414-1.414l-3.652-3.652A8.5 8.5 0 0 0 10.5 2M4 10.5a6.5 6.5 0 1 1 13 0 6.5 6.5 0 0 1-13 0"/></g></svg></span></span>
+          <input class="search-input" value="research/quantum-…">
+          <span class="spinner"></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10. FORM CONTROLS -->
+  <section>
+    <h2>Form Controls</h2>
+    <p class="desc">Checkbox / Radio / Switch / Slider — internal markers drawn in pure CSS.</p>
+
+    <div class="group-title">Checkbox</div>
+    <div class="ctrl-row">
+      <div class="ctrl"><span class="checkbox"></span><span class="micro">unchecked</span></div>
+      <div class="ctrl"><span class="checkbox hover"></span><span class="micro">hover</span></div>
+      <div class="ctrl"><span class="checkbox checked"></span><span class="micro">checked</span></div>
+      <div class="ctrl"><span class="checkbox indeterminate"></span><span class="micro">indeterminate</span></div>
+      <div class="ctrl"><span class="checkbox focus"></span><span class="micro">focus</span></div>
+      <div class="ctrl"><span class="checkbox disabled"></span><span class="micro">disabled</span></div>
+    </div>
+
+    <div class="group-title">Radio</div>
+    <div class="ctrl-row">
+      <div class="ctrl"><span class="radio"></span><span class="micro">unselected</span></div>
+      <div class="ctrl"><span class="radio checked"></span><span class="micro">selected</span></div>
+      <div class="ctrl"><span class="radio disabled"></span><span class="micro">disabled</span></div>
+    </div>
+
+    <div class="group-title">Switch</div>
+    <div class="ctrl-row">
+      <div class="ctrl"><span class="switch"><span class="thumb"></span></span><span class="micro">off</span></div>
+      <div class="ctrl"><span class="switch on"><span class="thumb"></span></span><span class="micro">on</span></div>
+      <div class="ctrl"><span class="switch disabled"><span class="thumb"></span></span><span class="micro">disabled</span></div>
+    </div>
+
+    <div class="group-title">Slider</div>
+    <div class="col" style="gap:24px">
+      <div class="ctrl"><div class="slider"><div class="track"><div class="fill" style="width:25%"></div><div class="thumb" style="left:25%"></div></div></div><span class="micro" style="margin-left:12px">25%</span></div>
+      <div class="ctrl"><div class="slider"><div class="track"><div class="fill" style="width:60%"></div><div class="thumb" style="left:60%"></div></div></div><span class="micro" style="margin-left:12px">60%</span></div>
+      <div class="ctrl"><div class="slider disabled"><div class="track"><div class="fill" style="width:40%"></div><div class="thumb" style="left:40%"></div></div></div><span class="micro" style="margin-left:12px">disabled</span></div>
+    </div>
+  </section>
+
+  <!-- 11. CARDS -->
+  <section>
+    <h2>Cards & Containers</h2>
+    <p class="desc">Five elevation variants. In dark mode Whisper degrades to Contained.</p>
+    <div class="cards">
+      <div>
+        <span class="label">Variant 1 · Flat</span>
+        <div class="card card-flat">
+          <h3 class="title">refactor-plan-001</h3>
+          <div class="body">Inline list row. No border, no shadow — purely typographic hierarchy.</div>
+          <div class="footer"><span>Updated 2m ago</span><span><span class="tag tag-default">DRAFT</span></span></div>
+        </div>
+      </div>
+      <div>
+        <span class="label">Variant 2 · Contained (default)</span>
+        <div class="card card-contained">
+          <h3 class="title">quantum-genius</h3>
+          <div class="body">Default project card. 1px border, no shadow. Used for most list and grid surfaces.</div>
+          <div class="footer"><span>v0.4.1</span><span class="tag tag-success">ACTIVE</span></div>
+        </div>
+      </div>
+      <div>
+        <span class="label">Variant 2 · Contained (hover)</span>
+        <div class="card card-contained hover">
+          <h3 class="title">quantum-genius</h3>
+          <div class="body">Border darkens one step on hover; background and shadow remain unchanged.</div>
+          <div class="footer"><span>v0.4.1</span><span class="tag tag-success">ACTIVE</span></div>
+        </div>
+      </div>
+      <div>
+        <span class="label">Variant 3 · Ring (selected)</span>
+        <div class="card card-ring" style="box-shadow:0 0 0 2px var(--w)">
+          <h3 class="title">edge-runner</h3>
+          <div class="body">Ring expresses selection via box-shadow rather than border — visually lighter.</div>
+          <div class="footer"><span>Selected</span><span class="tag tag-info">RUNNING</span></div>
+        </div>
+      </div>
+      <div>
+        <span class="label">Variant 4 · Whisper (degraded → Contained)</span>
+        <div class="card card-whisper">
+          <h3 class="title">hero-illustrator</h3>
+          <div class="body">In dark mode, soft shadows are imperceptible — Whisper falls back to a 1px border.</div>
+          <div class="footer"><span>Marketing</span><span class="tag tag-design">DESIGN</span></div>
+        </div>
+      </div>
+      <div>
+        <span class="label">Variant 5 · Inset (pressed)</span>
+        <div class="card card-inset">
+          <h3 class="title">toggle-pressed</h3>
+          <div class="body">Inset uses an interior border to express "pushed in" without changing background.</div>
+          <div class="footer"><span>Active state</span><span class="tag tag-default">PRESSED</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 12. STATUS -->
+  <section>
+    <h2>Agent Status Indicators</h2>
+    <p class="desc">8px dots with strict color-to-state mapping. Running pulses; others stay still.</p>
+    <div class="status-row">
+      <span class="status-chip"><span class="dot blue"></span>Idle · waiting</span>
+      <span class="status-chip"><span class="dot green dot-pulse"></span>Running · thinking</span>
+      <span class="status-chip"><span class="dot green"></span>Completed</span>
+      <span class="status-chip"><span class="dot red"></span>Error</span>
+      <span class="status-chip"><span class="dot gray"></span>Paused</span>
+    </div>
+  </section>
+
+  <!-- 13. CODE -->
+  <section>
+    <h2>Code Block</h2>
+    <p class="desc">Syntax highlight: keyword B400, string G600, comment N500, number O.</p>
+    <div class="code-head"><span class="micro">typescript</span><button class="btn btn-ghost" style="padding:4px 8px;font-size:12px">Copy</button></div>
+<pre class="code-block"><span class="com">// Spawn a research agent and stream its output</span>
+<span class="kw">import</span> { createAgent } <span class="kw">from</span> <span class="str">"@agentic/core"</span>;
+
+<span class="kw">const</span> <span class="fn">agent</span> = <span class="fn">createAgent</span>({
+  name: <span class="str">"quantum-genius"</span>,
+  runtime: <span class="str">"node20"</span>,
+  maxTokens: <span class="num">4096</span>,
+});
+
+<span class="kw">await</span> agent.<span class="fn">stream</span>(<span class="str">"refactor my repo"</span>);</pre>
+  </section>
+
+  <!-- 14. CHAT -->
+  <section>
+    <h2>Chat Bubbles</h2>
+    <p class="desc">User messages get a subtle bubble; agent output occupies the row.</p>
+    <div class="chat">
+      <div class="bubble-user">Refactor the auth module to use the new session API.</div>
+      <div class="bubble-agent">I'll start by scanning <code style="font-family:var(--font-mono);font-size:13px;background:var(--n800);padding:1px 5px;border-radius:4px">/src/auth</code> for legacy session usages, then propose a migration path. This will take a moment.</div>
+      <div class="bubble-user">Sounds good — also include test coverage estimates.</div>
+      <div class="bubble-agent">Acknowledged. I'll attach a coverage delta to each file in the final plan.</div>
+    </div>
+  </section>
+
+  <!-- 15. LINKS -->
+  <section>
+    <h2>Links</h2>
+    <p class="desc">Inline links carry an underline; standalone CTAs do not.</p>
+
+    <div class="row" style="gap:32px">
+      <div class="col">
+        <span class="label">inline · default</span>
+        <p style="font-size:15px;color:var(--w);margin:0">Read the <a class="link-inline" href="#">deployment guide</a> before continuing.</p>
+      </div>
+      <div class="col">
+        <span class="label">inline · hover</span>
+        <p style="font-size:15px;color:var(--w);margin:0">Read the <a class="link-inline hover" href="#">deployment guide<span style="display:inline-block;width:12px;height:12px;vertical-align:middle;flex-shrink:0;color:currentColor;" data-mc="external_link_line"><svg width="12" height="12" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g fill="none"><path fill="currentColor" d="M11 6a1 1 0 1 1 0 2H5v11h11v-6a1 1 0 1 1 2 0v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2zm9-3a1 1 0 0 1 1 1v5a1 1 0 1 1-2 0V6.414l-8.293 8.293a1 1 0 0 1-1.414-1.414L17.586 5H15a1 1 0 1 1 0-2Z"/></g></svg></span></a> before continuing.</p>
+      </div>
+    </div>
+
+    <div class="row" style="gap:32px;margin-top:20px">
+      <div class="col">
+        <span class="label">standalone · default</span>
+        <a class="link-standalone" href="#">View all projects <span style="display:inline-block;width:14px;height:14px;vertical-align:middle;flex-shrink:0;color:currentColor;" data-mc="arrow_right_line"><svg width="14" height="14" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="nonzero"><path fill="currentColor" d="m14.707 5.636 5.657 5.657a1 1 0 0 1 0 1.414l-5.657 5.657a1 1 0 0 1-1.414-1.414l3.95-3.95H4a1 1 0 1 1 0-2h13.243l-3.95-3.95a1 1 0 1 1 1.414-1.414Z"/></g></svg></span></a>
+      </div>
+      <div class="col">
+        <span class="label">standalone · hover</span>
+        <a class="link-standalone hover" href="#">View all projects <span style="display:inline-block;width:14px;height:14px;vertical-align:middle;flex-shrink:0;color:currentColor;" data-mc="arrow_right_line"><svg width="14" height="14" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="nonzero"><path fill="currentColor" d="m14.707 5.636 5.657 5.657a1 1 0 0 1 0 1.414l-5.657 5.657a1 1 0 0 1-1.414-1.414l3.95-3.95H4a1 1 0 1 1 0-2h13.243l-3.95-3.95a1 1 0 1 1 1.414-1.414Z"/></g></svg></span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 16. TAGS -->
+  <section>
+    <h2>Tags / Badges</h2>
+    <p class="desc">Semantic slots (fixed colors) and category slots (decorative palette).</p>
+
+    <div class="group-title">Semantic / Status</div>
+    <div class="row">
+      <div class="tag-cell"><span class="tag tag-default">DRAFT</span><span class="tag-tokens">N100 · N700</span></div>
+      <div class="tag-cell"><span class="tag tag-info">RUNNING</span><span class="tag-tokens">B100 · B800</span></div>
+      <div class="tag-cell"><span class="tag tag-success">ACTIVE</span><span class="tag-tokens">G100 · G800</span></div>
+      <div class="tag-cell"><span class="tag tag-warning">PENDING</span><span class="tag-tokens">Y100 · Y800</span></div>
+      <div class="tag-cell"><span class="tag tag-error">FAILED</span><span class="tag-tokens">R100 · R800</span></div>
+    </div>
+
+    <div class="group-title">Custom / Category</div>
+    <div class="row">
+      <div class="tag-cell"><span class="tag tag-research">RESEARCH</span><span class="tag-tokens">T100 · T800</span></div>
+      <div class="tag-cell"><span class="tag tag-design">DESIGN</span><span class="tag-tokens">P(purple)100 · P800</span></div>
+      <div class="tag-cell"><span class="tag tag-frontend">FRONTEND</span><span class="tag-tokens">Pk100 · Pk800</span></div>
+      <div class="tag-cell"><span class="tag tag-backend">BACKEND</span><span class="tag-tokens">S100 · S800</span></div>
+      <div class="tag-cell"><span class="tag tag-marketing">MARKETING</span><span class="tag-tokens">O100 · O800</span></div>
+    </div>
+  </section>
+
+</div>
+</body>
+</html>
