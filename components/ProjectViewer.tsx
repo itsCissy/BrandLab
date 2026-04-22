@@ -73,6 +73,11 @@ export function ProjectViewer({
           previewEnabled={hasAnyPreview}
         />
         <div className="flex items-center gap-2">
+          <DownloadPreviewButton
+            slug={slug}
+            theme={theme}
+            available={previewAvailable}
+          />
           <DownloadMdButton slug={slug} />
           <ThemeToggle theme={theme} onChange={pickTheme} />
         </div>
@@ -174,6 +179,40 @@ function DownloadMdButton({ slug }: { slug: string }) {
       title="Download DESIGN.md"
     >
       Download .md
+    </a>
+  );
+}
+
+function DownloadPreviewButton({
+  slug,
+  theme,
+  available,
+}: {
+  slug: string;
+  theme: Theme;
+  available: boolean;
+}) {
+  const cls =
+    'inline-flex items-center rounded-[6px] border border-[color:var(--color-border)] bg-[color:var(--color-surface)] px-3 py-1.5 text-sm transition-colors';
+  if (!available) {
+    return (
+      <span
+        aria-disabled="true"
+        className={`${cls} cursor-not-allowed text-[color:var(--color-muted)] opacity-40`}
+        title={`${theme} preview not generated yet`}
+      >
+        Download .html
+      </span>
+    );
+  }
+  return (
+    <a
+      href={`/preview/${slug}/${theme}.html`}
+      download={`${slug}-preview-${theme}.html`}
+      className={`${cls} text-[color:var(--color-muted)] hover:text-[color:var(--color-fg)]`}
+      title={`Download ${theme} preview`}
+    >
+      Download .html
     </a>
   );
 }
