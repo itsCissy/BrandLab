@@ -9,6 +9,9 @@
     "lint": "eslint",
     "typecheck": "tsc --noEmit"
   },
+  "engines": {
+    "node": ">=22"
+  },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.90.0",
     "gray-matter": "^4.0.3",
