@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+@source not "../public/preview";
+@source not "../public/download";
+@source not "../content";
+
 :root {
   --color-bg: #ffffff;
   --color-fg: #0F1729;
